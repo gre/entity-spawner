@@ -9,7 +9,7 @@ function lazySeedrandom (seed) {
 }
 
 /**
- * A Spawner is a particle system which calls a `spawn` function recurrently based on various parameters.
+ * A Spawner is a 2D entity emitter which calls a `spawn` function recurrently based on various parameters.
  *
  * Usage:
  * var spawner = new Spawner(...)
@@ -44,17 +44,17 @@ Spawner.prototype = {
    *   timeIndex: Int,
    *   countIndex: Int
    * }
-   * It is your responsability to create, update, destroy the particle depending on your needs.
+   * It is your responsability to create, update, destroy the entity depending on your needs.
    */
   spawn: function (params) { console.log("NOT IMPLEMENTED: Spawner#spawn", params); },
 
-  // The duration interval in ms between each particle tick
+  // The duration interval in ms between each entity tick
   speed: 1000,
 
-  // How much particles should be spawned per particle tick
+  // How much entities should be spawned per entity tick
   count: 1,
   
-  // angle in radians the spawner will rotate for each particle tick
+  // angle in radians the spawner will rotate for each entity tick
   rot: 0,
 
   // Spawner position = Particle initial position
@@ -63,7 +63,7 @@ Spawner.prototype = {
   // Spawner initial angle at initial time
   ang: 0,
 
-  // Spawner particle velocity
+  // Spawner entity velocity
   vel: 0,
 
   // front pixel distance
@@ -85,9 +85,9 @@ Spawner.prototype = {
   randVel: 0,
   seed: "",
 
-  // The maximum number of particles to catchup after a lag (typically the app running in background in another tab)
+  // The maximum number of entities to catchup after a lag (typically the app running in background in another tab)
   maxCatchup: 1000,
-  // The maxium number of particles to trigger in an update loop: N.B. an update loop usually run at max 60fps, so be sure this value is enough high to not limit the spawner's speed, but enough low to not increase a lag (typically when catching up).
+  // The maxium number of entities to trigger in an update loop: N.B. an update loop usually run at max 60fps, so be sure this value is enough high to not limit the spawner's speed, but enough low to not increase a lag (typically when catching up).
   maxPerLoop: 100
 };
 
@@ -150,12 +150,12 @@ Spawner.prototype.update = function (currentTime) {
   var currentti = this.timeIndexForTime(currentTime);
   var deltai = currentti - this.lastti;
 
-  if (deltai > this.maxCatchup) { // Avoid overflow of particles
-    console.log("Spawner: "+deltai+" particles to catchup. maximized to "+this.maxCatchup+" and lost some.");
+  if (deltai > this.maxCatchup) { // Avoid overflow of entities
+    console.log("Spawner: "+deltai+" entities to catchup. maximized to "+this.maxCatchup+" and lost some.");
     this.lastti = currentti -  this.maxCatchup;
   }
 
-  // Trigger all missing particles from last tick (if any)
+  // Trigger all missing entities from last tick (if any)
   for (var i=0; this.lastti < currentti && i < this.maxPerLoop; ++i) {
     var ti = ++this.lastti;
     if (this.patternMask) {
@@ -165,7 +165,7 @@ Spawner.prototype.update = function (currentTime) {
     }
 
     var delta = currentTime - ti * this.speed;
-    var random = lazySeedrandom(this.seed + "@" + ti); // A lazy version is used to not seedrandom() if there is no need for random() at all (because seedrandom might be a bottleneck when using a lot of particles)
+    var random = lazySeedrandom(this.seed + "@" + ti); // A lazy version is used to not seedrandom() if there is no need for random() at all (because seedrandom might be a bottleneck when using a lot of entities)
 
     for (var j=0; j<this.count; ++j) {
       var angle = this.ang + this.randAng * (random() - 0.5) + (this.rot * (this.count * ti + j)) % (2*Math.PI);
