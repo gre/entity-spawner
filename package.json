@@ -1,0 +1,29 @@
+{
+  "name": "particle-spawner",
+  "version": "0.0.0",
+  "description": "A time determinist particle spawner for your particle system",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gre/particle-spawner"
+  },
+  "keywords": [
+    "spawner",
+    "particle",
+    "generator",
+    "determinist",
+    "seed"
+  ],
+  "author": "Gaëtan Renaudeau",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gre/particle-spawner/issues"
+  },
+  "homepage": "https://github.com/gre/particle-spawner",
+  "dependencies": {
+    "seedrandom": "^2.3.11"
+  }
+}
