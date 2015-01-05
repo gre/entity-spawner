@@ -9,8 +9,15 @@ function lazySeedrandom (seed) {
 }
 
 /**
- * A Spawner is a PIXI container that contains particles.
- * particles are triggered reccurently based on parameters.
+ * A Spawner is a particle system which calls a `spawn` function recurrently based on various parameters.
+ *
+ * Usage:
+ * var spawner = new Spawner(...)
+ * spawner.init(startTime) // optional call
+ * function gameLoop (time) {
+ *   ...
+ *   spawner.update(time); // Call that ASAP to have a better spawning refresh rate (and avoid occasional lags)
+ * }
  */
 function Spawner (parameters) {
   for (var k in parameters)
@@ -41,9 +48,6 @@ Spawner.prototype = {
    */
   spawn: function (params) { console.log("NOT IMPLEMENTED: Spawner#spawn", params); },
 
-  // The initial absolute time
-  initialTime: 0,
-
   // The duration interval in ms between each particle tick
   speed: 1000,
 
@@ -71,6 +75,9 @@ Spawner.prototype = {
    */
   pattern: null,
   patternMask: null, // Alternatively you can use a mask: an array of 1 (bullet) and 0 (hole)
+
+  // The initial absolute time on which the spawner determinism is based on.
+  initialTime: 0,
 
   // Determinist Randomness
   randPos: 0,
@@ -111,8 +118,10 @@ Spawner.prototype.timeIndexForTime = function (t) {
 };
 
 /**
- * init the spawner from a given time (usually call once with the t given to update)
- * it can be used to trigger a lot of bullets from the past
+ * init the spawner from a given time
+ * it can be used to trigger a lot of bullets from the past.
+ * Example:
+ * spawner.init(Date.now() - 5000); // Catchup for past 5 seconds
  */
 Spawner.prototype.init = function (currentTime) {
   var ti = this.timeIndexForTime(currentTime);
@@ -156,7 +165,7 @@ Spawner.prototype.update = function (currentTime) {
     }
 
     var delta = currentTime - ti * this.speed;
-    var random = lazySeedrandom(this.seed + "@" + ti);
+    var random = lazySeedrandom(this.seed + "@" + ti); // A lazy version is used to not seedrandom() if there is no need for random() at all (because seedrandom might be a bottleneck when using a lot of particles)
 
     for (var j=0; j<this.count; ++j) {
       var angle = this.ang + this.randAng * (random() - 0.5) + (this.rot * (this.count * ti + j)) % (2*Math.PI);
