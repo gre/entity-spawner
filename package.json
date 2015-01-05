@@ -1,28 +1,31 @@
 {
-  "name": "particle-spawner",
-  "version": "0.0.0",
-  "description": "A time determinist particle spawner for your particle system",
+  "name": "entity-spawner",
+  "version": "0.1.0",
+  "description": "A time determinist 2D entity emitter for your entity/particle system",
   "main": "index.js",
   "scripts": {
     "test": "node test/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gre/particle-spawner"
+    "url": "https://github.com/gre/entity-spawner"
   },
   "keywords": [
     "spawner",
+    "emitter",
+    "entity",
     "particle",
     "generator",
     "determinist",
+    "2d",
     "seed"
   ],
   "author": "Gaëtan Renaudeau",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/gre/particle-spawner/issues"
+    "url": "https://github.com/gre/entity-spawner/issues"
   },
-  "homepage": "https://github.com/gre/particle-spawner",
+  "homepage": "https://github.com/gre/entity-spawner",
   "dependencies": {
     "seedrandom": "^2.3.11"
   }
