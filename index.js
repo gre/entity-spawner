@@ -151,13 +151,18 @@ Spawner.prototype.getCurrentRotations = function (currentTime) {
   var tito = tifrom + 1;
   var p = ti - tifrom;
   var angles = [];
-  for (var j=0; j<this.count; ++j)
+  for (var j=0; j<this.count; ++j) {
+    if (this.patternMask) {
+      var shouldSkip = this.patternMask[(this._ip + j) % this.patternMask.length] === 0;
+      if (shouldSkip) continue;
+    }
     angles.push(
       lerpRadian(
         2*Math.PI+(this.ang + (this.rot * (this.count * tifrom + j))) % (2*Math.PI),
         2*Math.PI+(this.ang + (this.rot * (this.count * tito + j))) % (2*Math.PI),
         p) % (2*Math.PI)
       );
+  }
   return angles;
 };
 
@@ -176,16 +181,16 @@ Spawner.prototype.update = function (currentTime) {
   // Trigger all missing entities from last tick (if any)
   for (var i=0; this.lastti < currentti && i < this.maxPerLoop; ++i) {
     var ti = ++this.lastti;
-    if (this.patternMask) {
-      var shouldSkip = this.patternMask[this._ip] === 0;
-      this._ip = this._ip >= this.patternMask.length - 1 ? 0 : this._ip + 1;
-      if (shouldSkip) continue;
-    }
 
     var delta = currentTime - ti * this.speed;
     var random = lazySeedrandom(this.seed + "@" + ti); // A lazy version is used to not seedrandom() if there is no need for random() at all (because seedrandom might be a bottleneck when using a lot of entities)
 
     for (var j=0; j<this.count; ++j) {
+      if (this.patternMask) {
+        var shouldSkip = this.patternMask[this._ip] === 0;
+        this._ip = this._ip >= this.patternMask.length - 1 ? 0 : this._ip + 1;
+        if (shouldSkip) continue;
+      }
       var angle = this.ang + this.randAng * (random() - 0.5) + (this.rot * (this.count * ti + j)) % (2*Math.PI);
       var direction = [ Math.cos(angle), Math.sin(angle) ];
       var vel = this.vel + this.randVel * (random() - 0.5);
