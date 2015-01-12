@@ -1,6 +1,6 @@
 {
   "name": "entity-spawner",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "A time determinist 2D entity emitter for your entity/particle system",
   "main": "index.js",
   "scripts": {
