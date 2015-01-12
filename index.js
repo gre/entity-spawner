@@ -137,7 +137,7 @@ Spawner.prototype.init = function (currentTime) {
   var ti = this.timeIndexForTime(currentTime);
   
   if (this.patternMask) {
-    var ipattern = ti % this.patternMask.length;
+    var ipattern = (ti * this.count) % this.patternMask.length;
     this._ip = ipattern;
   }
 
