@@ -113,6 +113,10 @@ Object.defineProperty(Spawner.prototype, "pattern", {
   }
 });
 
+Spawner.prototype.timeFloatIndexForTime = function (t) {
+  return (t - this.initialTime) / this.speed;
+};
+
 Spawner.prototype.timeIndexForTime = function (t) {
   return Math.floor((t - this.initialTime) / this.speed);
 };
@@ -136,7 +140,7 @@ Spawner.prototype.init = function (currentTime) {
 
 // Compute the current rotation position of "heads" useful for drawing rotating weapons.
 Spawner.prototype.getCurrentRotations = function (currentTime) {
-  var ti = this.timeIndexForTime(currentTime); // TODO: this should do interpolation
+  var ti = this.timeFloatIndexForTime(currentTime);
   var angles = [];
   for (var j=0; j<this.count; ++j)
     angles.push( this.ang + (this.rot * (this.count * ti + j)) % (2*Math.PI) );
