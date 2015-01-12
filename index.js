@@ -8,6 +8,12 @@ function lazySeedrandom (seed) {
   };
 }
 
+function lerpRadian (a, b, p) {
+  if (a > b + Math.PI) a -= 2*Math.PI;
+  if (b > a + Math.PI) b -= 2*Math.PI;
+  return a * (1-p) + b * p;
+}
+
 /**
  * A Spawner is a 2D entity emitter which calls a `spawn` function recurrently based on various parameters.
  *
@@ -141,9 +147,17 @@ Spawner.prototype.init = function (currentTime) {
 // Compute the current rotation position of "heads" useful for drawing rotating weapons.
 Spawner.prototype.getCurrentRotations = function (currentTime) {
   var ti = this.timeFloatIndexForTime(currentTime);
+  var tifrom = Math.floor(ti);
+  var tito = tifrom + 1;
+  var p = ti - tifrom;
   var angles = [];
   for (var j=0; j<this.count; ++j)
-    angles.push( this.ang + (this.rot * (this.count * ti + j)) % (2*Math.PI) );
+    angles.push(
+      lerpRadian(
+        2*Math.PI+(this.ang + (this.rot * (this.count * tifrom + j))) % (2*Math.PI),
+        2*Math.PI+(this.ang + (this.rot * (this.count * tito + j))) % (2*Math.PI),
+        p) % (2*Math.PI)
+      );
   return angles;
 };
 
