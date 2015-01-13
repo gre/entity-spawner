@@ -139,12 +139,11 @@ Spawner.prototype.getHeads = function (currentTime) {
   var p = ti - tifrom;
 
   var heads;
-  if (this._cacheHeadsTiFrom === tifrom) {
+  if (this._cacheHeads && this._cacheHeads.tifrom === tifrom) {
     heads = this._cacheHeads;
   }
   else {
     this._cacheHeads = heads = [];
-    this._cacheHeadsTiFrom = tifrom;
   }
 
   for (var j=0; j<this.count; ++j) {
@@ -162,7 +161,9 @@ Spawner.prototype.getHeads = function (currentTime) {
       obj = {
         trigger: trigger,
         angleFrom: angleFrom,
-        angleTo: angleTo
+        angleTo: angleTo,
+        tifrom: tifrom,
+        p: p
       };
     }
     obj.angle = obj.angleFrom * (1 - p) + obj.angleTo * p;
