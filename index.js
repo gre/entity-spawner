@@ -145,25 +145,27 @@ Spawner.prototype.init = function (currentTime) {
 };
 
 // Compute the current rotation position of "heads" useful for drawing rotating weapons.
-Spawner.prototype.getCurrentRotations = function (currentTime) {
+Spawner.prototype.getHeads = function (currentTime) {
   var ti = this.timeFloatIndexForTime(currentTime);
   var tifrom = Math.floor(ti);
   var tito = tifrom + 1;
   var p = ti - tifrom;
-  var angles = [];
+  var heads = [];
   for (var j=0; j<this.count; ++j) {
-    if (this.patternMask) {
-      var shouldSkip = this.patternMask[(this._ip + j) % this.patternMask.length] === 0;
-      if (shouldSkip) continue;
-    }
-    angles.push(
-      lerpRadian(
+    var trigger =
+      !this.patternMask ||
+      this.patternMask[(tifrom * this.count + j) % this.patternMask.length] !== 0;
+
+    heads.push({
+      trigger: trigger,
+      angle: lerpRadian(
         2*Math.PI+(this.ang + (this.rot * (this.count * tifrom + j))) % (2*Math.PI),
         2*Math.PI+(this.ang + (this.rot * (this.count * tito + j))) % (2*Math.PI),
         p) % (2*Math.PI)
-      );
+    });
   }
-  return angles;
+  
+  return heads;
 };
 
 Spawner.prototype.update = function (currentTime) {
