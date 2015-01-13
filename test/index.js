@@ -43,8 +43,6 @@ function testSpawner (desc, params, expectedSpawns, spawnerTimeIterator) {
   }
 }
 
-
-
 dataset.forEach(function (dataset) {
   var time = dataset.time;
   var iterator = time.step ? iterateTimeByStep(time.from, time.to, time.step) : iterateTimeJump(time.from, time.to);

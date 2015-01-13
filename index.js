@@ -1,17 +1,13 @@
 var seedrandom = require("seedrandom");
 
+var DOUBLE_PI = 2*Math.PI;
+
 function lazySeedrandom (seed) {
   var rng;
   return function () {
     if (!rng) rng = seedrandom(seed);
     return rng();
   };
-}
-
-function lerpRadian (a, b, p) {
-  if (a > b + Math.PI) a -= 2*Math.PI;
-  if (b > a + Math.PI) b -= 2*Math.PI;
-  return a * (1-p) + b * p;
 }
 
 /**
@@ -119,14 +115,6 @@ Object.defineProperty(Spawner.prototype, "pattern", {
   }
 });
 
-Spawner.prototype.timeFloatIndexForTime = function (t) {
-  return (t - this.initialTime) / this.speed;
-};
-
-Spawner.prototype.timeIndexForTime = function (t) {
-  return Math.floor((t - this.initialTime) / this.speed);
-};
-
 /**
  * init the spawner from a given time
  * it can be used to trigger a lot of bullets from the past.
@@ -134,7 +122,7 @@ Spawner.prototype.timeIndexForTime = function (t) {
  * spawner.init(Date.now() - 5000); // Catchup for past 5 seconds
  */
 Spawner.prototype.init = function (currentTime) {
-  var ti = this.timeIndexForTime(currentTime);
+  var ti = Math.floor(((currentTime - this.initialTime) / this.speed));
   
   if (this.patternMask) {
     var ipattern = (ti * this.count) % this.patternMask.length;
@@ -146,25 +134,42 @@ Spawner.prototype.init = function (currentTime) {
 
 // Compute the current rotation position of "heads" useful for drawing rotating weapons.
 Spawner.prototype.getHeads = function (currentTime) {
-  var ti = this.timeFloatIndexForTime(currentTime);
+  var ti = (currentTime - this.initialTime) / this.speed;
   var tifrom = Math.floor(ti);
-  var tito = tifrom + 1;
   var p = ti - tifrom;
-  var heads = [];
-  for (var j=0; j<this.count; ++j) {
-    var trigger =
-      !this.patternMask ||
-      this.patternMask[(tifrom * this.count + j) % this.patternMask.length] !== 0;
 
-    heads.push({
-      trigger: trigger,
-      angle: lerpRadian(
-        2*Math.PI+(this.ang + (this.rot * (this.count * tifrom + j))) % (2*Math.PI),
-        2*Math.PI+(this.ang + (this.rot * (this.count * tito + j))) % (2*Math.PI),
-        p) % (2*Math.PI)
-    });
+  var heads;
+  if (this._cacheHeadsTiFrom === tifrom) {
+    heads = this._cacheHeads;
+  }
+  else {
+    this._cacheHeads = heads = [];
+    this._cacheHeadsTiFrom = tifrom;
+  }
+
+  for (var j=0; j<this.count; ++j) {
+    var obj = heads[j];
+    if (!obj) {
+      var fromIndex = this.count * tifrom + j;
+      var toIndex = fromIndex + this.count;
+      var trigger =
+        !this.patternMask ||
+        this.patternMask[fromIndex % this.patternMask.length] !== 0;
+      var angleFrom = (this.rot * fromIndex + this.ang + DOUBLE_PI) % DOUBLE_PI;
+      var angleTo = (this.rot * toIndex + this.ang + DOUBLE_PI) % DOUBLE_PI;
+      if (angleFrom > angleTo + Math.PI) angleFrom -= DOUBLE_PI;
+      if (angleTo > angleFrom + Math.PI) angleTo -= DOUBLE_PI;
+      obj = {
+        trigger: trigger,
+        angleFrom: angleFrom,
+        angleTo: angleTo
+      };
+    }
+    obj.angle = obj.angleFrom * (1 - p) + obj.angleTo * p;
+    heads[j] = obj;
   }
   
+
   return heads;
 };
 
@@ -172,7 +177,7 @@ Spawner.prototype.update = function (currentTime) {
   // In case the spawner was not initialized, we use currentTime (means no catchup)
   if (this.lastti === null) this.init(currentTime);
 
-  var currentti = this.timeIndexForTime(currentTime);
+  var currentti = Math.floor(((currentTime - this.initialTime) / this.speed));
   var deltai = currentti - this.lastti;
 
   if (deltai > this.maxCatchup) { // Avoid overflow of entities
