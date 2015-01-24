@@ -130,6 +130,11 @@ Spawner.prototype.init = function (currentTime) {
   }
 
   this.lastti = ti;
+
+  this._headsRef = [];
+  for (var j=0; j<this.count; ++j) {
+    this._headsRef[j] = {trigger:false,angleFrom:0,angleTo:0,tifrom:0,p:0};
+  }
 };
 
 // Compute the current rotation position of "heads" useful for drawing rotating weapons.
@@ -138,17 +143,14 @@ Spawner.prototype.getHeads = function (currentTime) {
   var tifrom = Math.floor(ti);
   var p = ti - tifrom;
 
-  var heads;
-  if (this._cacheHeads && this._cacheHeads.tifrom === tifrom) {
-    heads = this._cacheHeads;
-  }
-  else {
-    this._cacheHeads = heads = [];
-  }
+  var sameTi = this._headstifrom === tifrom;
+  this._headstifrom = tifrom;
+
+  var heads = this._headsRef;
 
   for (var j=0; j<this.count; ++j) {
     var obj = heads[j];
-    if (!obj) {
+    if (!sameTi) {
       var fromIndex = this.count * tifrom + j;
       var toIndex = fromIndex + this.count;
       var trigger =
@@ -158,16 +160,13 @@ Spawner.prototype.getHeads = function (currentTime) {
       var angleTo = (this.rot * toIndex + this.ang + DOUBLE_PI) % DOUBLE_PI;
       if (angleFrom > angleTo + Math.PI) angleFrom -= DOUBLE_PI;
       if (angleTo > angleFrom + Math.PI) angleTo -= DOUBLE_PI;
-      obj = {
-        trigger: trigger,
-        angleFrom: angleFrom,
-        angleTo: angleTo,
-        tifrom: tifrom,
-        p: p
-      };
+      obj.trigger = trigger;
+      obj.angleFrom = angleFrom;
+      obj.angleTo = angleTo;
+      obj.tifrom = tifrom;
     }
     obj.angle = obj.angleFrom * (1 - p) + obj.angleTo * p;
-    heads[j] = obj;
+    obj.p = p;
   }
   
 

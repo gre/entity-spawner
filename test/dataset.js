@@ -11,7 +11,7 @@ module.exports = [
       "to": 900,
       "step": 100
     },
-    "heads":[{"time":898,"result":[{"trigger":true,"angleFrom":0,"angleTo":0,"tifrom":0,"p":0.898,"angle":0}]}]
+    "heads":[{"time":898,"result":[{"trigger":true,"angleFrom":0,"angleTo":0,"p":0.898,"angle":0}]}]
   },
   {
     "desc": "a basic spawning",
@@ -25,7 +25,7 @@ module.exports = [
       "to": 900,
       "step": 100
     },
-    "heads":[{"time":898,"result":[{"trigger":true,"angleFrom":0,"angleTo":0,"tifrom":2,"p":0.6966966966966965,"angle":0}]}]
+    "heads":[{"time":898,"result":[{"trigger":true,"angleFrom":0,"angleTo":0,"p":0.6966966966966965,"angle":0}]}]
   },
   {
     "desc": "a rotating spawning",
@@ -44,7 +44,7 @@ module.exports = [
       "to": 2000,
       "step": 100
     },
-    "heads":[{"time":1998,"result":[{"trigger":true,"angleFrom":-1.5707963267948966,"angleTo":0,"tifrom":1,"p":0.998,"angle":-0.003141592653589796}]}]
+    "heads":[{"time":1998,"result":[{"trigger":true,"angleFrom":-1.5707963267948966,"angleTo":0,"p":0.998,"angle":-0.003141592653589796}]}]
   },
   {
     "desc": "another rotating spawning",
@@ -63,7 +63,7 @@ module.exports = [
       "to": 200,
       "step": 40
     },
-    "heads":[{"time":198,"result":[{"trigger":true,"angleFrom":0.5235987755982983,"angleTo":1.0471975511965965,"tifrom":19,"p":0.8000000000000007,"angle":0.9424777960769373}]}]
+    "heads":[{"time":198,"result":[{"trigger":true,"angleFrom":0.5235987755982983,"angleTo":1.0471975511965965,"p":0.8000000000000007,"angle":0.9424777960769373}]}]
   },
   {
     "desc": "simple pattern",
@@ -83,7 +83,7 @@ module.exports = [
       "to": 850,
       "step": 4
     },
-    "heads":[{"time":848,"result":[{"trigger":true,"angleFrom":3,"angleTo":3,"tifrom":8,"p":0.4800000000000004,"angle":3}]}]
+    "heads":[{"time":848,"result":[{"trigger":true,"angleFrom":3,"angleTo":3,"p":0.4800000000000004,"angle":3}]}]
   },
   {
     "desc": "randomness1",
@@ -105,7 +105,7 @@ module.exports = [
       "to": 850,
       "step": 40
     },
-    "heads":[{"time":848,"result":[{"trigger":true,"angleFrom":2.7168146928204138,"angleTo":3.7168146928204138,"tifrom":8,"p":0.4800000000000004,"angle":3.196814692820414}]}]
+    "heads":[{"time":848,"result":[{"trigger":true,"angleFrom":2.7168146928204138,"angleTo":3.7168146928204138,"p":0.4800000000000004,"angle":3.196814692820414}]}]
   },
   {
     "desc": "randomness2",
@@ -128,8 +128,33 @@ module.exports = [
       "step": 40
     },
     "heads":[
-      {"time":848,"result":[{"trigger":true,"angleFrom":2.7168146928204138,"angleTo":3.7168146928204138,"tifrom":8,"p":0.4800000000000004,"angle":3.196814692820414}]},
-      {"time":850,"result":[{"trigger":true,"angleFrom":2.7168146928204138,"angleTo":3.7168146928204138,"tifrom":8,"p":0.5,"angle":3.2168146928204138}]}
+      {"time":848,"result":[{"trigger":true,"angleFrom":2.7168146928204138,"angleTo":3.7168146928204138,"p":0.4800000000000004,"angle":3.196814692820414}]},
+      {"time":850,"result":[{"trigger":true,"angleFrom":2.7168146928204138,"angleTo":3.7168146928204138,"p":0.5,"angle":3.2168146928204138}]}
+    ]
+  },
+  {
+    "desc": "count",
+    "spawner": {
+      "initialTime": 100,
+      "speed": 200,
+      "pos": [410, 7],
+      "count": 3,
+      "rot": 1,
+      "ang": 1,
+      "vel": 0.4,
+      "randPos": 5,
+      "randAng": 0.5,
+      "randVel": 0.1,
+      "seed": "bar"
+    },
+    "expected": [{"timeIndex":2,"countIndex":0,"angle":7.120421001663163,"position":[443.44059822193157,43.588701502185515],"velocity":[0.28512023280613674,0.31632565893262765],"direction":[0.6695186941354949,0.7427952060986268],"random1":0.8690685988085374,"random2":0.459155393725945},{"timeIndex":2,"countIndex":1,"angle":1.4930051464240577,"position":[415.2165327865643,46.971641701656324],"velocity":[0.028750307345108323,0.368837314793316],"direction":[0.07771274563707341,0.9969757916647463],"random1":0.08570084345574992,"random2":0.15093959546144858},{"timeIndex":2,"countIndex":2,"angle":2.6848013749212103,"position":[372.5351598138308,27.29747072495997],"velocity":[-0.36098555282452277,0.17740950282492093],"direction":[-0.8974723880157889,0.4410706437173498],"random1":0.9797574528339547,"random2":0.8055721147035279},{"timeIndex":3,"countIndex":0,"angle":3.675457914793368,"position":[354.7110047909971,-25.99847009102035],"velocity":[-0.3086914753129266,-0.18247402119803396],"direction":[-0.8608466117033413,-0.5088645312053854],"random1":0.22331193917436304,"random2":0.7129774118935177},{"timeIndex":3,"countIndex":1,"angle":4.484962736629086,"position":[392.95657933599017,-65.75108441569388],"velocity":[-0.09357418057968503,-0.4043301493310299],"direction":[-0.22547079125142183,-0.9742499280433423],"random1":0.3606142642190843,"random2":0.763397350820065},{"timeIndex":3,"countIndex":2,"angle":5.950461578742011,"position":[468.9874456743658,-12.245258078519768],"velocity":[0.3348347226512715,-0.11570917065887963],"direction":[0.9451562302098563,-0.3266185856553378],"random1":0.9720062118344145,"random2":0.965774746574383},{"timeIndex":4,"countIndex":0,"angle":6.650324131796076,"position":[473.7314009691215,30.064965308704245],"velocity":[0.39176704612464947,0.15066388897235503],"direction":[0.9333581732020865,0.3589464034042741],"random1":0.7837499008312898,"random2":0.8414072444367208},{"timeIndex":4,"countIndex":1,"angle":1.561745822993178,"position":[409.19957545259626,66.82536617273063],"velocity":[0.0033001515460404683,0.3646273744454962],"direction":[0.009050380245321373,0.9999590444700298],"random1":0.07098440391246344,"random2":0.1743404299781611},{"timeIndex":4,"countIndex":2,"angle":2.366499683670731,"position":[359.8860465988991,58.73669183831024],"velocity":[-0.31624989199796727,0.309798117742829],"direction":[-0.7143559784216179,0.6997824919882555],"random1":0.463117756790722,"random2":0.08086624001345179}],
+    "time": {
+      "from": 330,
+      "to": 1000,
+      "step": 90
+    },
+    "heads":[
+      {"time":1004,"result":[{"trigger":true,"angleFrom":0.43362938564082754,"angleTo":3.4336293856408275,"p":0.5199999999999996,"angle":1.9936293856408263},{"trigger":true,"angleFrom":1.4336293856408275,"angleTo":4.4336293856408275,"p":0.5199999999999996,"angle":2.9936293856408263},{"trigger":true,"angleFrom":2.4336293856408275,"angleTo":5.4336293856408275,"p":0.5199999999999996,"angle":3.9936293856408263}]}
     ]
   }
 ];
