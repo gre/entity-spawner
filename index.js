@@ -133,12 +133,13 @@ Spawner.prototype.init = function (currentTime) {
 
   this._headsRef = [];
   for (var j=0; j<this.count; ++j) {
-    this._headsRef[j] = {trigger:false,angleFrom:0,angleTo:0,tifrom:0,p:0};
+    this._headsRef[j] = {trigger:false,angleFrom:0,angleTo:0,p:0};
   }
 };
 
 // Compute the current rotation position of "heads" useful for drawing rotating weapons.
 Spawner.prototype.getHeads = function (currentTime) {
+  if (!this._headsRef) return []; // For some reason this spawner is not initialized.
   var ti = (currentTime - this.initialTime) / this.speed;
   var tifrom = Math.floor(ti);
   var p = ti - tifrom;
@@ -163,7 +164,6 @@ Spawner.prototype.getHeads = function (currentTime) {
       obj.trigger = trigger;
       obj.angleFrom = angleFrom;
       obj.angleTo = angleTo;
-      obj.tifrom = tifrom;
     }
     obj.angle = obj.angleFrom * (1 - p) + obj.angleTo * p;
     obj.p = p;
