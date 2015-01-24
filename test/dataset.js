@@ -10,7 +10,8 @@ module.exports = [
       "from": 1,
       "to": 900,
       "step": 100
-    }
+    },
+    "heads":[{"time":898,"result":[{"trigger":true,"angleFrom":0,"angleTo":0,"tifrom":0,"p":0.898,"angle":0}]}]
   },
   {
     "desc": "a basic spawning",
@@ -23,7 +24,8 @@ module.exports = [
       "from": 1,
       "to": 900,
       "step": 100
-    }
+    },
+    "heads":[{"time":898,"result":[{"trigger":true,"angleFrom":0,"angleTo":0,"tifrom":2,"p":0.6966966966966965,"angle":0}]}]
   },
   {
     "desc": "a rotating spawning",
@@ -41,7 +43,8 @@ module.exports = [
       "from": 0,
       "to": 2000,
       "step": 100
-    }
+    },
+    "heads":[{"time":1998,"result":[{"trigger":true,"angleFrom":-1.5707963267948966,"angleTo":0,"tifrom":1,"p":0.998,"angle":-0.003141592653589796}]}]
   },
   {
     "desc": "another rotating spawning",
@@ -59,7 +62,8 @@ module.exports = [
       "from": 0,
       "to": 200,
       "step": 40
-    }
+    },
+    "heads":[{"time":198,"result":[{"trigger":true,"angleFrom":0.5235987755982983,"angleTo":1.0471975511965965,"tifrom":19,"p":0.8000000000000007,"angle":0.9424777960769373}]}]
   },
   {
     "desc": "simple pattern",
@@ -78,7 +82,8 @@ module.exports = [
       "from": 0,
       "to": 850,
       "step": 4
-    }
+    },
+    "heads":[{"time":848,"result":[{"trigger":true,"angleFrom":3,"angleTo":3,"tifrom":8,"p":0.4800000000000004,"angle":3}]}]
   },
   {
     "desc": "randomness1",
@@ -99,7 +104,8 @@ module.exports = [
       "from": 0,
       "to": 850,
       "step": 40
-    }
+    },
+    "heads":[{"time":848,"result":[{"trigger":true,"angleFrom":2.7168146928204138,"angleTo":3.7168146928204138,"tifrom":8,"p":0.4800000000000004,"angle":3.196814692820414}]}]
   },
   {
     "desc": "randomness2",
@@ -120,6 +126,10 @@ module.exports = [
       "from": 0,
       "to": 850,
       "step": 40
-    }
+    },
+    "heads":[
+      {"time":848,"result":[{"trigger":true,"angleFrom":2.7168146928204138,"angleTo":3.7168146928204138,"tifrom":8,"p":0.4800000000000004,"angle":3.196814692820414}]},
+      {"time":850,"result":[{"trigger":true,"angleFrom":2.7168146928204138,"angleTo":3.7168146928204138,"tifrom":8,"p":0.5,"angle":3.2168146928204138}]}
+    ]
   }
 ];

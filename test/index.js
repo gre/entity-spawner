@@ -41,10 +41,18 @@ function testSpawner (desc, params, expectedSpawns, spawnerTimeIterator) {
     console.log("");
     throw e;
   }
+  return spawner;
 }
 
 dataset.forEach(function (dataset) {
   var time = dataset.time;
   var iterator = time.step ? iterateTimeByStep(time.from, time.to, time.step) : iterateTimeJump(time.from, time.to);
-  testSpawner(dataset.desc, dataset.spawner, dataset.expected, iterator);
+  var spawner = testSpawner(dataset.desc, dataset.spawner, dataset.expected, iterator);
+
+  (dataset.heads||[]).forEach(function (headTest) {
+    assert.deepEqual(
+      spawner.getHeads(headTest.time),
+      headTest.result
+    );
+  });
 });
